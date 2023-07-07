@@ -1,9 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://ce72f5ld44mnh"]
 
-[ext_resource type="TileSet" uid="uid://dctl88bjhr04r" path="res://tilemaps/pixel_tile_set.tres" id="1_ttdus"]
+[ext_resource type="TileSet" uid="uid://dctl88bjhr04r" path="res://tiles/pixel_tile_set.tres" id="1_ttdus"]
 
 [node name="TileMap" type="TileMap"]
 y_sort_enabled = true
+texture_filter = 1
+position = Vector2(0, 1)
 tile_set = ExtResource("1_ttdus")
 cell_quadrant_size = 32
 format = 2

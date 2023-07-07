@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="Ants-expansion"
-config/features=PackedStringArray("4.0", "GL Compatibility")
-config/icon="res://icon.svg"
+run/main_scene="res://level/demo_world.tscn"
+config/features=PackedStringArray("4.0", "C#", "GL Compatibility")
+config/icon="res://ant/icon.svg"
 
 [dotnet]
 

@@ -1,18 +1,104 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmlqss2ff6nt6"]
+[gd_scene load_steps=10 format=3 uid="uid://bmlqss2ff6nt6"]
 
 [ext_resource type="Script" path="res://src/AntBase.cs" id="1_q1hvu"]
-[ext_resource type="Texture2D" uid="uid://5rwxs5afclrg" path="res://ant/icon.svg" id="2_78nd6"]
+[ext_resource type="SpriteFrames" uid="uid://d3dmfg8x24r4k" path="res://ant/resources/ant_base_sprite_frames.tres" id="3_r7os0"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k2bg2"]
-size = Vector2(40, 40)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p7v5x"]
+radius = 17.0
+height = 86.0
+
+[sub_resource type="Animation" id="Animation_d02kt"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_idgs0"]
+resource_name = "walk"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+
+[sub_resource type="Animation" id="Animation_ttutj"]
+resource_name = "attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.785398]
+}
+
+[sub_resource type="Animation" id="Animation_srgx7"]
+resource_name = "gather"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.785398]
+}
+
+[sub_resource type="Animation" id="Animation_kq0hp"]
+resource_name = "RESRET"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pmig0"]
+_data = {
+"RESRET": SubResource("Animation_kq0hp"),
+"attack": SubResource("Animation_ttutj"),
+"gather": SubResource("Animation_srgx7"),
+"idle": SubResource("Animation_d02kt"),
+"walk": SubResource("Animation_idgs0")
+}
 
 [node name="AntBase" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_q1hvu")
 
-[node name="Icon" type="Sprite2D" parent="."]
-position = Vector2(-3.8147e-06, -3.8147e-06)
-scale = Vector2(0.3125, 0.3125)
-texture = ExtResource("2_78nd6")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_k2bg2")
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_p7v5x")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CollisionShape2D"]
+rotation = -2.26323
+sprite_frames = ExtResource("3_r7os0")
+animation = &"walk"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+radius = 30.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_pmig0")
+}

@@ -1,0 +1,54 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://d3dmfg8x24r4k"]
+
+[ext_resource type="Texture2D" uid="uid://bnqg3x7si31o8" path="res://assets/karinca.png" id="1_nikjk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnvym"]
+atlas = ExtResource("1_nikjk")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppeg1"]
+atlas = ExtResource("1_nikjk")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4lfi"]
+atlas = ExtResource("1_nikjk")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgklx"]
+atlas = ExtResource("1_nikjk")
+region = Rect2(0, 0, 96, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnvym")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppeg1")
+}],
+"loop": true,
+"name": &"gathering",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4lfi")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgklx")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]

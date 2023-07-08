@@ -1,13 +1,16 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://fa5op5n062hv"]
 
-[ext_resource type="Texture2D" uid="uid://c2ko4aosi8gy3" path="res://assets/tiles/tile.png" id="1_h73mj"]
+[ext_resource type="Texture2D" uid="uid://btdcl4bxhx3gv" path="res://assets/tiles/tiles_trans_sm.png" id="1_jbam7"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7qi3p"]
-texture = ExtResource("1_h73mj")
-texture_region_size = Vector2i(177, 159)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wkfcc"]
+texture = ExtResource("1_jbam7")
+margins = Vector2i(15, 18)
+texture_region_size = Vector2i(107, 92)
 0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
 
 [resource]
 tile_shape = 1
-tile_size = Vector2i(169, 106)
-sources/0 = SubResource("TileSetAtlasSource_7qi3p")
+tile_size = Vector2i(100, 56)
+sources/2 = SubResource("TileSetAtlasSource_wkfcc")

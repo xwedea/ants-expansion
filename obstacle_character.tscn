@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://brknoo3kiibdh"]
+
+[ext_resource type="Texture2D" uid="uid://c2ko4aosi8gy3" path="res://assets/tiles/tile.png" id="1_jnurr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7aa65"]
+size = Vector2(67, 61)
+
+[node name="ObstacleCharacter" type="CharacterBody2D"]
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+estimate_radius = false
+radius = 36.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -0.5)
+shape = SubResource("RectangleShape2D_7aa65")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-3.8147e-06, -3.8147e-06)
+scale = Vector2(0.380503, 0.380503)
+texture = ExtResource("1_jnurr")

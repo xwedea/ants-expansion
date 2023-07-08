@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dv56gspp8u3rr"]
+[gd_scene load_steps=4 format=3 uid="uid://dv56gspp8u3rr"]
 
-[ext_resource type="PackedScene" uid="uid://bmlqss2ff6nt6" path="res://ant/ant_base.tscn" id="2_ancat"]
+[ext_resource type="PackedScene" uid="uid://c5wk5byi7i4lo" path="res://ant/queen_ant.tscn" id="2_26x88"]
 [ext_resource type="PackedScene" uid="uid://566y37ukki54" path="res://tiles/mid_tile_map.tscn" id="2_ehsdc"]
-[ext_resource type="PackedScene" uid="uid://cxd3snva84evt" path="res://ant/ant_enemy.tscn" id="3_bic5k"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ks41p"]
 vertices = PackedVector2Array(362, 738, 765, 347, 1195, -50, 1294, 383, 1303, 709, -118, 731, -58, -14, 358, 282, 632, 461, 498, 198)
@@ -22,13 +21,9 @@ layer_2/z_index = -1
 position = Vector2(31, 0)
 navigation_polygon = SubResource("NavigationPolygon_ks41p")
 
-[node name="AntBase" parent="." instance=ExtResource("2_ancat")]
-position = Vector2(315, 436)
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, 1)
 anchor_mode = 0
 
-[node name="AntEnemy" parent="." instance=ExtResource("3_bic5k")]
-visible = false
-position = Vector2(1204, 424)
+[node name="QueenAnt" parent="." instance=ExtResource("2_26x88")]
+position = Vector2(306, 455)

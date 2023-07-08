@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public partial class QueenAnt : AntBase
 {
 
-	int FoodStock;
 	
 	public override void _Ready()
 	{

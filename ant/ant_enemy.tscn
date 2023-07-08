@@ -1,21 +1,22 @@
 [gd_scene load_steps=3 format=3 uid="uid://cxd3snva84evt"]
 
-[ext_resource type="Texture2D" uid="uid://5rwxs5afclrg" path="res://ant/icon.svg" id="2_i4rwe"]
+[ext_resource type="Texture2D" uid="uid://bnqg3x7si31o8" path="res://assets/karinca.png" id="1_tdlrk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k2bg2"]
 size = Vector2(24.1563, 24.6875)
 
-[node name="AntEnemy" type="CharacterBody2D"]
+[node name="AntEnemy" type="CharacterBody2D" groups=["enemy"]]
 motion_mode = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_k2bg2")
 
 [node name="Icon" type="Sprite2D" parent="."]
+modulate = Color(0, 0.752941, 0.537255, 1)
 texture_filter = 1
 position = Vector2(2.38419e-07, 2.38419e-07)
 scale = Vector2(0.19043, 0.19043)
-texture = ExtResource("2_i4rwe")
+texture = ExtResource("1_tdlrk")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true

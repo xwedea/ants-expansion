@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmlqss2ff6nt6"]
+[gd_scene load_steps=11 format=3 uid="uid://bmlqss2ff6nt6"]
 
 [ext_resource type="Script" path="res://src/AntBase.cs" id="1_q1hvu"]
 [ext_resource type="SpriteFrames" uid="uid://d3dmfg8x24r4k" path="res://ant/resources/ant_base_sprite_frames.tres" id="3_r7os0"]
@@ -6,6 +6,10 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p7v5x"]
 radius = 17.0
 height = 86.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6fgs7"]
+radius = 26.0
+height = 104.0
 
 [sub_resource type="Animation" id="Animation_kq0hp"]
 resource_name = "RESRET"
@@ -86,13 +90,19 @@ motion_mode = 1
 script = ExtResource("1_q1hvu")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.5708
 shape = SubResource("CapsuleShape2D_p7v5x")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CollisionShape2D"]
 rotation = -2.26323
 sprite_frames = ExtResource("3_r7os0")
 animation = &"walk"
+
+[node name="EngageArea" type="Area2D" parent="CollisionShape2D"]
+rotation = -1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionShape2D/EngageArea"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_6fgs7")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
@@ -102,3 +112,11 @@ radius = 30.0
 libraries = {
 "": SubResource("AnimationLibrary_pmig0")
 }
+
+[node name="EngageTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="area_entered" from="CollisionShape2D/EngageArea" to="." method="OnEngageAreaEntered"]
+[connection signal="area_exited" from="CollisionShape2D/EngageArea" to="." method="OnEngageAreaExited"]
+[connection signal="timeout" from="EngageTimer" to="." method="OnEngageTimeout"]

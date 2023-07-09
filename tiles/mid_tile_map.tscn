@@ -10,6 +10,7 @@ cell_quadrant_size = 32
 format = 2
 layer_0/name = "1"
 layer_0/y_sort_enabled = true
+layer_0/z_index = 1
 layer_0/tile_data = PackedInt32Array(327678, 65543, 1, 393216, 262151, 0, 327679, 262151, 0, 393214, 262151, 1, 393213, 262151, 0, 131072, 262151, 1)
 layer_1/name = "0"
 layer_1/enabled = true

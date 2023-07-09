@@ -3,11 +3,12 @@ using Godot.Collections;
 using System;
 using System.Collections.Generic;
 
-public partial class AntBase : CharacterBody2D
+public partial class EnemyAnt : AntBase
 {
 	protected AnimationPlayer AnimPlayer;
 	protected Area2D EngageArea;
 	protected Timer EngageTimer;
+	protected Timer PatrolTimer;
 	protected CollisionShape2D Capsule;
 	protected AnimatedSprite2D Sprite;
 
@@ -17,9 +18,7 @@ public partial class AntBase : CharacterBody2D
 	protected List<Vector2> NavPath = new List<Vector2>();
 
 	protected Game2D GameNode;
-
-	public RandomNumberGenerator Rand = new RandomNumberGenerator();
-
+	
 	
 	enum AntState {
 		Idle,
@@ -30,8 +29,6 @@ public partial class AntBase : CharacterBody2D
 
 	AntState State = AntState.Idle;
 	Node2D Target;
-	public int Health = 100;
-	private int Damage = 15;
 
 	public const float VelocityMultiplier = 12000;
 	
@@ -46,25 +43,31 @@ public partial class AntBase : CharacterBody2D
 		Sprite = Capsule.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
 		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-		AnimPlayer.Play("idle");
+		AnimPlayer.Play("walk");
 
 		EngageTimer = GetNode<Timer>("EngageTimer");
+		PatrolTimer = GetNode<Timer>("PatrolTimer");
+
+		float randWait = Rand.Randf() * 3 + 2;
+		PatrolTimer.WaitTime = randWait;
+
 		EngageTimer.Start();
+		PatrolTimer.Start();
 
 	}
 	
 	public override void _PhysicsProcess(double delta)
 	{
+		if (Target != null) {
+			ToAttacking();
+		}
+
 		if (NavAgent.IsNavigationFinished()) {
 			Velocity = Vector2.Zero;
-
-			if (State != AntState.Attacking && State != AntState.Gathering){
-				ToIdle();
-			}
-
 			return;
 		}
 		
+
 		if (Target != null) {
 			NavAgent.TargetPosition = Target.Position;
 		}
@@ -77,7 +80,6 @@ public partial class AntBase : CharacterBody2D
 		
 		float velSize = Velocity.Length();
 		if (velSize == 0) {
-			GD.Print("HERE");
 			ToIdle();
 		}
 		else {
@@ -125,59 +127,29 @@ public partial class AntBase : CharacterBody2D
 
 	}
 
-	public override void _Process(double delta)
-	{
 
-	}
-
-	private void OnEngageAreaEntered(Area2D otherArea)
-	{
-		if (Target == null) return;
-
-		if (otherArea.IsInGroup("resource_area")) {
-			GD.Print("Gathering Entered");
-			ToGathering();
-		}
-		else if (otherArea.IsInGroup("enemy_area")) {
-			ToAttacking();
-		}
-
-		NavAgent.TargetPosition = Position;
-	}
-
-	private void OnEngageAreaExited(Area2D otherArea)
-	{
-		if (Target != null) {
-			NavAgent.TargetPosition = otherArea.Position;
-		}
-		else {
-			ToIdle();
-		}
-	}
-
-
-	public virtual void ToIdle() {
+	public override void ToIdle() {
 		State = AntState.Idle;
 
 		String currentAnim = AnimPlayer.CurrentAnimation;
 		if (currentAnim != "idle")
 			AnimPlayer.Play("idle");
 	}
-	public virtual void ToWalking() {
+	public override void ToWalking() {
 		State = AntState.Walking;
 
 		String currentAnim = AnimPlayer.CurrentAnimation;
 		if (currentAnim != "walk")
 			AnimPlayer.Play("walk");
 	}
-	public virtual void ToGathering() {
+	public override void ToGathering() {
 		State = AntState.Gathering;
 
 		String currentAnim = AnimPlayer.CurrentAnimation;
 		if (currentAnim != "gather")
 			AnimPlayer.Play("gather");
 	}
-	public virtual void ToAttacking() {
+	public override void ToAttacking() {
 		State = AntState.Attacking;
 
 		String currentAnim = AnimPlayer.CurrentAnimation;
@@ -185,63 +157,30 @@ public partial class AntBase : CharacterBody2D
 			AnimPlayer.Play("attack");
 	}
 
-	public virtual void SetTarget(Node2D node) {
+	public override void SetTarget(Node2D node) {
 		GD.Print("SetTarget");
 		Target = node;
 		NavAgent.TargetPosition = node.Position;
 	}
 
-	public virtual void MoveToLocation(Vector2 location) {
+	public override void MoveToLocation(Vector2 location) {
 		GD.Print("MoveToLocation");
 		Target = null;
 		NavAgent.TargetPosition = location;
 	}
 
 
-	public virtual void MouseLeftClick() {
-		Vector2 mousePos= GetGlobalMousePosition();
-		NavAgent.TargetPosition = mousePos;
-
-		// Set target
-		PhysicsPointQueryParameters2D query = new PhysicsPointQueryParameters2D();
-		query.Position = mousePos;
-
-		PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
-		Array<Dictionary> collisionObjects = spaceState.IntersectPoint(query, 1);
-		if (collisionObjects.Count > 0) {
-			Variant value;
-			if (collisionObjects[0].TryGetValue("collider", out value)) {
-				Node2D node = (Node2D) value.Obj;
-				if (node.IsInGroup("resource") || node.IsInGroup("enemy")) {
-					Target = node;
-				}
-			}
-		}
-		else {
-			Target = null;
-		}
-
-	}
-
 	public override void _UnhandledInput(InputEvent @event)
 	{
-		// if (Input.IsActionJustPressed("LeftClick")) MouseLeftClick();
-
+		return;
 	}
 
-	protected virtual void OnEngageTimeout()
+	protected override void OnEngageTimeout()
 	{
-		if (State == AntState.Gathering) {
-			GameNode.ChangeFoodStock(10);
-		}
-
 		if (State == AntState.Attacking) {
 			EnemyAnt enemy = (EnemyAnt) Target;
-			enemy.Target = this;
-			enemy.ToAttacking();
 			enemy.GetDamage(35);
 		}
-
 	}
 
 	public void SetColor(String code) {
@@ -253,18 +192,24 @@ public partial class AntBase : CharacterBody2D
 		GD.Print(str);
 	}
 
-	public void GetDamage(int amount) {
-		GD.Print(Health);
-		Health -= amount;
-		if (Health <= 0 ) {
-			GameNode.SelectedAnts.Remove(this);
-			QueueFree();
+
+	private void OnPatrolTimeout()
+	{	
+		if (Target != null) {
+			return;
 		}
+
+
+		float newX = Position.X + Rand.RandiRange(-200, 200);
+		float newY = Position.Y + Rand.RandiRange(-200, 200);
+		NavAgent.TargetPosition = new Vector2(newX, newY);
+
+
+		PatrolTimer.WaitTime = Rand.Randf() * 3 + 2;
+		PatrolTimer.Start();
+		
 	}
 
-
 }
-
-
 
 

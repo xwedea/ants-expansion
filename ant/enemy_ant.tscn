@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dowhtrvdo8rlf"]
+
+[ext_resource type="PackedScene" uid="uid://bmlqss2ff6nt6" path="res://ant/ant_base.tscn" id="1_0hqbd"]
+[ext_resource type="Script" path="res://src/EnemyAnt.cs" id="2_bjp2x"]
+
+[node name="EnemyAnt" groups=["enemy"] instance=ExtResource("1_0hqbd")]
+script = ExtResource("2_bjp2x")
+
+[node name="AnimatedSprite2D" parent="CollisionShape2D" index="0"]
+self_modulate = Color(0, 1, 0.329412, 1)
+
+[node name="EngageArea" parent="CollisionShape2D" index="1" groups=["enemy_area"]]
+
+[node name="PatrolTimer" type="Timer" parent="." index="4"]
+wait_time = 4.0
+
+[connection signal="timeout" from="PatrolTimer" to="." method="OnPatrolTimeout"]

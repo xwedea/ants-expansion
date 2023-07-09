@@ -1,11 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://dowdw4hnt3igj"]
 
-[ext_resource type="Texture2D" uid="uid://5rwxs5afclrg" path="res://assets/icon.svg" id="1_cvrr5"]
+[ext_resource type="Texture2D" uid="uid://c211mnk812u5f" path="res://assets/food.png" id="1_p60cl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qa6il"]
-radius = 58.0345
+radius = 65.0077
 
 [node name="FoodSource" type="StaticBody2D" groups=["resource"]]
+z_index = 3
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(0.499998, -1.91699)
@@ -13,10 +14,11 @@ scale = Vector2(3.57639, 3.8239)
 polygon = PackedVector2Array(-9, -8, 9, -8, 9, 9, -9, 9)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_cvrr5")
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_p60cl")
 
 [node name="Radius" type="Area2D" parent="." groups=["resource_area"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Radius"]
+z_index = 1
 shape = SubResource("CircleShape2D_qa6il")

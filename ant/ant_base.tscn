@@ -264,8 +264,7 @@ shape = SubResource("CapsuleShape2D_p7v5x")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CollisionShape2D"]
 sprite_frames = ExtResource("3_r7os0")
-animation = &"walk_down"
-frame = 1
+animation = &"walk_side"
 
 [node name="EngageArea" type="Area2D" parent="CollisionShape2D"]
 rotation = -1.5708

@@ -8,6 +8,7 @@ public partial class AntBase : CharacterBody2D
 	protected AnimationPlayer AnimPlayer;
 	protected Area2D EngageArea;
 	protected Timer EngageTimer;
+	protected CollisionShape2D Capsule;
 
 	protected NavigationAgent2D NavAgent;
 	protected Rid NavMap;
@@ -35,6 +36,7 @@ public partial class AntBase : CharacterBody2D
 		NavAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
 		EngageArea = GetNode<Area2D>("EngageArea");
 		GameNode = GetTree().Root.GetNode<Game2D>("Game2D");
+		Capsule = GetNode<CollisionShape2D>("CollisionShape2D");
 
 		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		AnimPlayer.Play("idle");
@@ -58,11 +60,50 @@ public partial class AntBase : CharacterBody2D
 		MoveAndSlide();
 		
 		float velSize = Velocity.Length();
-		if (velSize > 0) {
-			ToWalking();
+		if (velSize == 0) {
+			ToIdle();
 		}
 		else {
-			ToIdle();
+			float radians = Velocity.Angle();
+			float angle = (float)(radians * (180.0 / Math.PI));
+
+			// GD.Print(angle);
+
+			if (angle >= -30 && angle < 30) {
+				AnimPlayer.Play("walk_side");
+				
+				Capsule.Scale = new Vector2(1, 1);
+			}
+			else if (angle >= 30 && angle < 60) {
+				AnimPlayer.Play("walk_down_diagonal");
+				Capsule.Scale = new Vector2(1, 1);
+			}
+			else if (angle >= 60 && angle < 120) {
+				AnimPlayer.Play("walk_down");
+				Capsule.Scale = new Vector2(1, 1);
+			}
+			else if (angle >= 120 && angle < 150) {
+				AnimPlayer.Play("walk_down_diagonal");
+				Capsule.Scale = new Vector2(-1, 1);
+			}
+			else if (angle >= 150 || angle < -150) {
+				AnimPlayer.Play("walk_side");
+				Capsule.Scale = new Vector2(-1, 1);
+			}
+			else if (angle >= -150 && angle < -120) {
+				AnimPlayer.Play("walk_up_diagonal");
+				Capsule.Scale = new Vector2(-1, 1);
+			}
+			else if (angle >= -120 && angle < -60) {
+				AnimPlayer.Play("walk_up");
+				Capsule.Scale = new Vector2(1, 1);
+			}
+			else if (angle >= -60 && angle < -30) {
+				AnimPlayer.Play("walk_up_diagonal");
+				Capsule.Scale = new Vector2(1, 1);
+			}
+			
+			State = AntState.Walking;
 		}
 
 	}

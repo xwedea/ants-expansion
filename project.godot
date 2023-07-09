@@ -10,14 +10,14 @@ config_version=5
 
 [application]
 
-config/name="Ants-expansion"
+config/name="The Queen"
 run/main_scene="res://levels/game_2d.tscn"
-config/features=PackedStringArray("4.0", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.0", "GL Compatibility")
 config/icon="res://assets/icon.svg"
 
 [dotnet]
 
-project/assembly_name="Ants-expansion"
+project/assembly_name="Ants"
 
 [input]
 

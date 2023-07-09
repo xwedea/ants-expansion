@@ -19,7 +19,6 @@ public partial class AntBase : CharacterBody2D
 	protected Game2D GameNode;
 
 	public RandomNumberGenerator Rand = new RandomNumberGenerator();
-
 	
 	enum AntState {
 		Idle,
@@ -55,6 +54,15 @@ public partial class AntBase : CharacterBody2D
 	
 	public override void _PhysicsProcess(double delta)
 	{
+		if (State == AntState.Attacking) {
+			if (Target != null) {
+				GD.Print("not null");
+			}
+			else {
+				GD.Print("null");
+			}
+		}
+
 		if (NavAgent.IsNavigationFinished()) {
 			Velocity = Vector2.Zero;
 
@@ -240,6 +248,7 @@ public partial class AntBase : CharacterBody2D
 			enemy.Target = this;
 			enemy.ToAttacking();
 			enemy.GetDamage(35);
+			
 		}
 
 	}

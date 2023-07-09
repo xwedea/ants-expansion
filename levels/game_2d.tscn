@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://ba7on36o62dtj"]
+[gd_scene load_steps=9 format=3 uid="uid://ba7on36o62dtj"]
 
 [ext_resource type="Script" path="res://src/Game2D.cs" id="1_ogxod"]
 [ext_resource type="PackedScene" uid="uid://566y37ukki54" path="res://tiles/mid_tile_map.tscn" id="2_o8lv8"]
 [ext_resource type="PackedScene" uid="uid://dowdw4hnt3igj" path="res://food_source.tscn" id="4_6ef1m"]
 [ext_resource type="PackedScene" uid="uid://dfovuge32vjlm" path="res://ant/soldier_ant.tscn" id="5_i67w6"]
 [ext_resource type="PackedScene" uid="uid://dowhtrvdo8rlf" path="res://ant/enemy_ant.tscn" id="5_plucx"]
+[ext_resource type="AudioStream" uid="uid://dd25d2n5xwt7u" path="res://sounds/atmosphere.wav" id="6_ifu6d"]
+[ext_resource type="AudioStream" uid="uid://xaabhx1oenvn" path="res://sounds/victory.wav" id="7_0dtdd"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ks41p"]
 vertices = PackedVector2Array(1454, 911, 1769, 1240, 1516, 1068, 1410, 937, 2207, 1468, 2923, 1468, 1972, 1684, 2578, -157, 2943, -8, 1108, 130, 1212, 33, 2283, -134, 2052.06, -180.295, 1057, 717, 1176, 734, 475, 869, 341, 755, 2094, 1464, 1935, 1619, -776, 421, -848, 346, -403, 292, 1309, 1056, 773, 1684, 659, 1572, 393, 965, 1177, 1897, 654, 1795, -639, 564, 1807, 815, 1788, 744, 1909, 643, 3004, 413, 3099, 478, 3147, 687, 1988, 936, 3344, 1549, 3366, 1652, 3036, 1642, 3026, 1511, 3311, 1428, 1201, -235, 1540, -289, 2078, -278, 1104, -107, 886, -194, 932, -290, 986, -337, 990, 34, 1295, 641, 218, 390, 184, 342, 251, 299, 319, 308, 1099, 656, 2036, 1806, 1542, 2093, 2139, 1215, 2003, 1124, 2043, 1057, 1949, 1466, 1417, 1158, 2182, 1347, 153, 53, 60, -104, 175, -214, 695, -167, 352, 215, 262, 162, 3094, 103, 1416, 405, 369, 277, 3303, 796, -458, 863, -193, 189, -26, 207, -257, 1894, 560, 1700, -308, 1405, -236, 1002, 278, 898, -418, 949, 56, 365, 1748, 483, 154, 438, 86, 289, 1212, 590, 1271, 494, 1497, 428, 1614, 643, 1643, 623)
@@ -52,7 +54,15 @@ position = Vector2(737, 1667)
 
 [node name="SoldierAnt" parent="." instance=ExtResource("5_i67w6")]
 z_index = 0
-position = Vector2(609, 405)
+position = Vector2(581, 338)
+
+[node name="SoldierAnt4" parent="." instance=ExtResource("5_i67w6")]
+z_index = 0
+position = Vector2(826, 464)
+
+[node name="SoldierAnt3" parent="." instance=ExtResource("5_i67w6")]
+z_index = 0
+position = Vector2(609, 567)
 
 [node name="EnemyAnt" parent="." instance=ExtResource("5_plucx")]
 z_index = 0
@@ -89,3 +99,9 @@ position = Vector2(1212, 1435)
 [node name="EnemyAnt9" parent="." instance=ExtResource("5_plucx")]
 z_index = 0
 position = Vector2(1491, 1615)
+
+[node name="AtmosphereAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_ifu6d")
+
+[node name="VictoryAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_0dtdd")

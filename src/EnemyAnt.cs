@@ -31,27 +31,28 @@ public partial class EnemyAnt : AntBase
 	Node2D Target;
 
 	public const float VelocityMultiplier = 12000;
+
 	
 	public override void _Ready()
 	{
 		base._Ready();
 
+		Damage = 15;
+		
 		NavAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
-		EngageArea = GetNode<Area2D>("EngageArea");
-		GameNode = GetTree().Root.GetNode<Game2D>("Game2D");
 		Capsule = GetNode<CollisionShape2D>("CollisionShape2D");
+		GameNode = GetTree().Root.GetNode<Game2D>("Game2D");
+		EngageArea = Capsule.GetNode<Area2D>("EngageArea");
 		Sprite = Capsule.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
 		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-		AnimPlayer.Play("walk");
+		AnimPlayer.Play("idle");
 
 		EngageTimer = GetNode<Timer>("EngageTimer");
-		PatrolTimer = GetNode<Timer>("PatrolTimer");
-
-		float randWait = Rand.Randf() * 3 + 2;
-		PatrolTimer.WaitTime = randWait;
-
 		EngageTimer.Start();
+
+		PatrolTimer = GetNode<Timer>("PatrolTimer");
+		PatrolTimer.WaitTime = Rand.Randf() * 3 + 2;;
 		PatrolTimer.Start();
 
 	}
@@ -61,6 +62,12 @@ public partial class EnemyAnt : AntBase
 		if (Target != null) {
 			ToAttacking();
 		}
+
+		if (NavAgent == null) {
+			GD.Print("Agent was null");
+		}
+
+		NavAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
 
 		if (NavAgent.IsNavigationFinished()) {
 			Velocity = Vector2.Zero;
@@ -207,7 +214,7 @@ public partial class EnemyAnt : AntBase
 
 		PatrolTimer.WaitTime = Rand.Randf() * 3 + 2;
 		PatrolTimer.Start();
-		
+
 	}
 
 }

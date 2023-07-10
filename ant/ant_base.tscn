@@ -316,11 +316,6 @@ autostart = true
 
 [node name="AttackAudio" type="AudioStreamPlayer2D" parent="."]
 
-<<<<<<< HEAD
-[connection signal="area_entered" from="CollisionShape2D/EngageArea" to="." method="OnEngageAreaEntered"]
-[connection signal="area_exited" from="CollisionShape2D/EngageArea" to="." method="OnEngageAreaExited"]
-=======
 [connection signal="area_entered" from="EngageArea" to="." method="OnEngageAreaEntered"]
 [connection signal="area_exited" from="EngageArea" to="." method="OnEngageAreaExited"]
->>>>>>> test
 [connection signal="timeout" from="EngageTimer" to="." method="OnEngageTimeout"]

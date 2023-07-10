@@ -42,8 +42,8 @@ public partial class EnemyAnt : AntBase
 		NavAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
 		Capsule = GetNode<CollisionShape2D>("CollisionShape2D");
 		GameNode = GetTree().Root.GetNode<Game2D>("Game2D");
-		EngageArea = Capsule.GetNode<Area2D>("EngageArea");
-		Sprite = Capsule.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		EngageArea = GetNode<Area2D>("EngageArea");
+		Sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
 		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		AnimPlayer.Play("idle");

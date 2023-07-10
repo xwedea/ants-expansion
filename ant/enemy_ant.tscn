@@ -6,10 +6,8 @@
 [node name="EnemyAnt" groups=["enemy"] instance=ExtResource("1_0hqbd")]
 script = ExtResource("2_bjp2x")
 
-[node name="AnimatedSprite2D" parent="CollisionShape2D" index="0"]
-self_modulate = Color(0, 1, 0.329412, 1)
-
-[node name="EngageArea" parent="CollisionShape2D" index="1" groups=["enemy_area"]]
+[node name="AnimatedSprite2D" parent="." index="1"]
+self_modulate = Color(0, 0.521569, 0.380392, 1)
 
 [node name="PatrolTimer" type="Timer" parent="." index="4"]
 wait_time = 4.0

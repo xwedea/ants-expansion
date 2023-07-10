@@ -40,7 +40,7 @@ public partial class EnemyAnt : AntBase
 		EngageArea = GetNode<Area2D>("EngageArea");
 		GameNode = GetTree().Root.GetNode<Game2D>("Game2D");
 		Capsule = GetNode<CollisionShape2D>("CollisionShape2D");
-		Sprite = Capsule.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		Sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
 		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		AnimPlayer.Play("walk");

@@ -1,7 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfovuge32vjlm"]
 
 [ext_resource type="PackedScene" uid="uid://bmlqss2ff6nt6" path="res://ant/ant_base.tscn" id="1_x6wux"]
+<<<<<<< HEAD
 [ext_resource type="AudioStream" uid="uid://dre2p626ajcuc" path="res://sounds/attack.wav" id="2_1rnxn"]
+=======
+[ext_resource type="AudioStream" path="res://sounds/attack.wav" id="2_1rnxn"]
+>>>>>>> test
 
 [node name="SoldierAnt" groups=["own"] instance=ExtResource("1_x6wux")]
 

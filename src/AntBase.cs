@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public partial class AntBase : CharacterBody2D
 {
+	public AudioStreamPlayer2D AttackAudio;
+
 	protected AnimationPlayer AnimPlayer;
 	protected Area2D EngageArea;
 	protected Timer EngageTimer;
@@ -30,7 +32,7 @@ public partial class AntBase : CharacterBody2D
 	AntState State = AntState.Idle;
 	Node2D Target;
 	public int Health = 100;
-	private int Damage = 15;
+	protected int Damage = 50;
 
 	public const float VelocityMultiplier = 12000;
 	
@@ -38,11 +40,13 @@ public partial class AntBase : CharacterBody2D
 	{
 		base._Ready();
 
+		AttackAudio = GetNode<AudioStreamPlayer2D>("AttackAudio");
+
 		NavAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
-		EngageArea = GetNode<Area2D>("EngageArea");
-		GameNode = GetTree().Root.GetNode<Game2D>("Game2D");
 		Capsule = GetNode<CollisionShape2D>("CollisionShape2D");
-		Sprite = Capsule.GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		GameNode = GetTree().Root.GetNode<Game2D>("Game2D");
+		EngageArea = GetNode<Area2D>("EngageArea");
+		Sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 
 		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		AnimPlayer.Play("idle");
@@ -63,19 +67,39 @@ public partial class AntBase : CharacterBody2D
 			}
 		}
 
-		if (NavAgent.IsNavigationFinished()) {
-			Velocity = Vector2.Zero;
-
-			if (State != AntState.Attacking && State != AntState.Gathering){
-				ToIdle();
-			}
-
+		if (State == AntState.Attacking) {
 			return;
 		}
-		
-		if (Target != null) {
-			NavAgent.TargetPosition = Target.Position;
+		else if (State == AntState.Gathering) {
+			return;
 		}
+
+		if (Target == null) {
+			if (NavAgent.IsNavigationFinished()) {
+				Velocity = Vector2.Zero;
+				ToIdle();
+			}
+			else {
+				ToIdle();
+			}
+		}
+		else {
+			if (NavAgent.IsNavigationFinished()) {
+				Velocity = Vector2.Zero;
+				
+			}
+			else if (State == AntState.Attacking) {
+
+			}
+			else if (State == AntState.Gathering) {
+
+			}
+			else {
+				NavAgent.TargetPosition = Target.Position;
+			}
+
+		}
+
 
 		Vector2 nextPosition = NavAgent.GetNextPathPosition();
 		Vector2 direction = Position.DirectionTo(nextPosition);
@@ -85,7 +109,6 @@ public partial class AntBase : CharacterBody2D
 		
 		float velSize = Velocity.Length();
 		if (velSize == 0) {
-			GD.Print("HERE");
 			ToIdle();
 		}
 		else {
@@ -147,7 +170,12 @@ public partial class AntBase : CharacterBody2D
 			ToGathering();
 		}
 		else if (otherArea.IsInGroup("enemy_area")) {
-			ToAttacking();
+			Node2D otherParent = otherArea.GetParent<Node2D>();
+
+			if (Target != null && otherParent == Target) {
+				GD.Print("DETECTED");
+				ToAttacking();
+			}
 		}
 
 		NavAgent.TargetPosition = Position;
@@ -155,7 +183,9 @@ public partial class AntBase : CharacterBody2D
 
 	private void OnEngageAreaExited(Area2D otherArea)
 	{
-		if (Target != null) {
+		Node2D otherParent = otherArea.GetParent<Node2D>();
+
+		if (Target != null && otherParent == Target) {
 			NavAgent.TargetPosition = otherArea.Position;
 		}
 		else {
@@ -247,8 +277,11 @@ public partial class AntBase : CharacterBody2D
 			EnemyAnt enemy = (EnemyAnt) Target;
 			enemy.Target = this;
 			enemy.ToAttacking();
-			enemy.GetDamage(35);
-			
+			if (enemy.GetDamage(35)) {
+				ToIdle();
+				Target = null;
+				NavAgent.TargetPosition = Position;
+			}
 		}
 
 	}
@@ -262,13 +295,16 @@ public partial class AntBase : CharacterBody2D
 		GD.Print(str);
 	}
 
-	public void GetDamage(int amount) {
-		GD.Print(Health);
+	public bool GetDamage(int amount) {
 		Health -= amount;
+
 		if (Health <= 0 ) {
 			GameNode.SelectedAnts.Remove(this);
-			QueueFree();
+			Free();
+			return true;
 		}
+
+		else return false;
 	}
 
 

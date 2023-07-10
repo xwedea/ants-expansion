@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public partial class Game2D : Node2D
 {
+	public AudioStreamPlayer2D atmosphereAudio;
+	public AudioStreamPlayer2D victoryAudio;
 
 	protected Camera2D GameCamera;
 	private const int edgeOffset = 20; 
@@ -19,18 +21,26 @@ public partial class Game2D : Node2D
 
 	public override void _Ready()
 	{
+		atmosphereAudio = GetNode<AudioStreamPlayer2D>("AtmosphereAudio");
+		victoryAudio = GetNode<AudioStreamPlayer2D>("VictoryAudio");
+
 		GameCamera = GetNode<Camera2D>("Camera2D");
 		SelectedAnts = new List<AntBase>();
+
+		atmosphereAudio.Play(10);
+		
 	}
 
 	public override void _Process(double delta)
 	{
 		MoveCamera(delta);
 
-		// Array<Node> ants = GetTree().GetNodesInGroup("ant");
-		// for (int i = 0; i < ants.Count; i++) {
-		// 	AntBase ant = (AntBase) ants[0];
-		// }
+		Array<Node> enemies = GetTree().GetNodesInGroup("enemy");
+		// GD.Print(enemies.Count);
+
+		if (enemies.Count == 8) {
+			victoryAudio.Play();
+		}
 
 	}
 
